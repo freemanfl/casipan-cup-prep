@@ -35,7 +35,7 @@
   top: 0;
   z-index: 30;
   display: flex;
-  gap: 18px;
+  gap: 16px;
   max-width: 920px;
   margin: 0 auto;
   padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 10px;
@@ -235,6 +235,17 @@
   font-weight: 600;
 }
 
+.overview h2 {
+  margin: 24px 0 8px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.overview h2:first-child {
+  margin-top: 0;
+}
+
 .overview h3 {
   margin: 16px 0 8px;
   font-size: 1rem;
@@ -378,6 +389,60 @@
   color: var(--muted);
 }
 
+.overview ol.tell-apart {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.tell-apart li {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.tell-if {
+  color: var(--foreground);
+}
+
+.tell-then {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.style-card {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.style-card h3 {
+  margin: 0 0 8px;
+  color: var(--accent);
+}
+
+.style-card p {
+  margin: 0 0 8px;
+}
+
+.style-card p:last-child {
+  margin-bottom: 0;
+}
+
+.style-rule {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface-raised);
+}
+
 .overview-table-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -447,6 +512,14 @@
 }
 
 @media (max-width: 720px) {
+  .caspian-tabs {
+    gap: 12px;
+  }
+
+  .caspian-tabs button {
+    font-size: 1rem;
+  }
+
   .caspian-float button {
     width: 76px;
     font-size: 0.72rem;
