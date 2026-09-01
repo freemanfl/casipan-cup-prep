@@ -1,7 +1,4 @@
-import {
-  QUESTION_STYLES,
-  TELL_APART,
-} from "@/lib/caspian/question-styles";
+import { QUESTION_STYLES } from "@/lib/caspian/question-styles";
 
 const EDS = [
   "Мерзляков",
@@ -54,42 +51,23 @@ export function Overview() {
     <div className="overview">
       <h2>Типы вопросов</h2>
       <p>
-        Сначала форма, потом тема. Если плывёшь — не думай «это про
-        Шекспира», смотри, как вопрос устроен. У одного вопроса типов может быть
-        несколько: ИКС плюс «двумя словами» плюс бланк.
+        Сначала как устроен, потом о чём. Иди сверху вниз, остановись на первом
+        совпадении. Типов на одном вопросе может быть несколько.
       </p>
 
-      <div className="overview-lead">
-        <strong>Как отличить.</strong> Иди сверху вниз и остановись на первом
-        совпадении. Ниже — что делать, если уже понял тип.
-      </div>
-
-      <ol className="tell-apart">
-        {TELL_APART.map((row) => (
-          <li key={row.then}>
-            <span className="tell-if">{row.if}</span>
-            <span className="tell-then">{row.then}</span>
+      <ol className="style-list">
+        {QUESTION_STYLES.map((style, index) => (
+          <li key={style.id}>
+            <p className="style-head">
+              <span className="style-num">{index + 1}</span>
+              <strong>{style.id}</strong>
+              <span className="style-see">{style.see}</span>
+            </p>
+            <p className="style-do">{style.do}</p>
+            <p className="style-ex">{style.example}</p>
           </li>
         ))}
       </ol>
-      <p className="overview-note">
-        Блиц и дуплет — это формат чтения (несколько коротких на одном бланке),
-        а не отдельная механика. Внутри них всё равно будет ИКС, прямой или
-        намёк.
-      </p>
-
-      {QUESTION_STYLES.map((style) => (
-        <article className="style-card" key={style.id}>
-          <h3>{style.id}</h3>
-          <p>{style.spot}</p>
-          <p>
-            <strong>Пример.</strong> {style.example}
-          </p>
-          <p className="style-rule">
-            <strong>Если плывёшь.</strong> {style.rule}
-          </p>
-        </article>
-      ))}
 
       <h2>Как готовиться</h2>
       <p>
@@ -113,14 +91,6 @@ export function Overview() {
           искусство.
         </li>
       </ol>
-
-      <div className="overview-lead">
-        Это турнир на кругозор. Короткого списка «обязательных фактов» нет:
-        девять из десяти вещей всплывают один раз. Имеет смысл читать то, что
-        повторяется у нескольких редакторов, и привыкнуть к вопросам, где ответ
-        спрятан за словами вроде «ИКС» или «ОНА» — так чаще пишут Мерзляков и
-        Моносов.
-      </div>
 
       <div className="overview-stats">
         <div className="overview-stat">

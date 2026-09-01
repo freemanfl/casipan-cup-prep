@@ -389,58 +389,56 @@
   color: var(--muted);
 }
 
-.overview ol.tell-apart {
-  margin: 0 0 16px;
+.overview ol.style-list {
+  margin: 8px 0 28px;
   padding: 0;
   list-style: none;
-  display: grid;
-  gap: 8px;
+  border-top: 1px solid var(--border);
 }
 
-.tell-apart li {
-  display: grid;
-  gap: 4px;
+.style-list > li {
   margin: 0;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
+  padding: 12px 0 14px;
+  border-bottom: 1px solid var(--border);
 }
 
-.tell-if {
-  color: var(--foreground);
+.overview .style-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 10px;
+  margin: 0 0 6px;
 }
 
-.tell-then {
+.style-num {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  width: 1.25rem;
+  flex-shrink: 0;
+}
+
+.style-head strong {
   color: var(--accent);
   font-weight: 600;
 }
 
-.style-card {
-  margin: 0 0 12px;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
+.style-see {
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
-.style-card h3 {
-  margin: 0 0 8px;
-  color: var(--accent);
+.overview .style-do,
+.overview .style-ex {
+  margin: 0 0 4px;
+  padding-left: 1.9rem;
 }
 
-.style-card p {
-  margin: 0 0 8px;
+.overview .style-ex {
+  color: var(--muted);
 }
 
-.style-card p:last-child {
+.overview .style-ex:last-child {
   margin-bottom: 0;
-}
-
-.style-rule {
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: var(--surface-raised);
 }
 
 .overview-table-wrap {
@@ -545,6 +543,11 @@
   .pie-wrap {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .overview .style-do,
+  .overview .style-ex {
+    padding-left: 0;
   }
 }
 
