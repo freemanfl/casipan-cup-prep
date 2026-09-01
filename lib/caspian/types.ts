@@ -20,3 +20,11 @@ export type CaspianFact = {
   gloss: string;
 };
 
+export type TourGroup = {
+  tour_id: string;
+  tour_title: string;
+  editor: string;
+  date: string;
+  questions: CaspianQuestion[];
+};
+
