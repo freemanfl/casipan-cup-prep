@@ -235,6 +235,234 @@
   font-weight: 600;
 }
 
+.overview-page h2 {
+  margin: 28px 0 8px;
+  font-size: 1.15rem;
+  font-weight: 650;
+  color: var(--foreground);
+}
+
+.overview-page h2:first-child {
+  margin-top: 0;
+}
+
+.overview-page section {
+  margin-bottom: 8px;
+}
+
+.tl-scroll {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 12px 8px 28px;
+  margin: 8px -8px 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tl-line {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 62px;
+  height: 2px;
+  background: var(--border);
+  pointer-events: none;
+}
+
+.tl-track {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  min-width: max-content;
+  gap: 0;
+}
+
+.tl-node {
+  appearance: none;
+  position: relative;
+  width: 92px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+
+.tl-year {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--muted);
+}
+
+.tl-dot {
+  display: block;
+  width: 14px;
+  height: 14px;
+  margin: 10px auto 8px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.tl-node:hover .tl-dot,
+.tl-node:focus-visible .tl-dot {
+  transform: scale(1.45);
+  background: var(--accent);
+  box-shadow: 0 0 0 6px rgb(56 189 248 / 0.18);
+}
+
+.tl-count {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.tl-caption {
+  min-height: 4.8em;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 0.95rem;
+}
+
+.tl-caption strong {
+  color: var(--accent);
+}
+
+.pie-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px 18px;
+  grid-template-columns: 1fr 1fr;
+  font-size: 0.9rem;
+}
+
+.pie-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pie-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin: 12px 0 8px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.tag-cloud-item {
+  line-height: 1.2;
+  font-weight: 650;
+}
+
+.type-list {
+  display: grid;
+  gap: 12px;
+}
+
+.type-card {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.type-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.02rem;
+  color: var(--accent);
+}
+
+.type-card p {
+  margin: 0 0 10px;
+}
+
+.type-card p:last-child {
+  margin-bottom: 0;
+}
+
+.era-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgb(7 13 25 / 0.72);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px 32px;
+  overflow: auto;
+}
+
+.era-modal {
+  position: relative;
+  width: min(720px, 100%);
+  margin: 8vh 0 24px;
+  padding: 22px 20px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px var(--shadow-color);
+}
+
+.era-kicker {
+  margin: 0 0 4px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+
+.era-modal h3 {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+}
+
+.era-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.era-close:hover {
+  color: var(--foreground);
+}
+
+.era-facts {
+  max-height: 48vh;
+  overflow: auto;
+  margin-top: 8px;
+  padding-right: 4px;
+}
+
 .overview h3 {
   margin: 16px 0 8px;
   font-size: 1rem;
@@ -472,6 +700,10 @@
   .pie-wrap {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .pie-legend {
+    grid-template-columns: 1fr;
   }
 }
 

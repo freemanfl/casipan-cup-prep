@@ -3,19 +3,27 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { QuestionsPanel } from "./QuestionsPanel";
 
-type Tab = "questions" | "overview";
+type Tab = "questions" | "overview" | "baza";
 
-export function CaspianShell({ overview }: { overview: ReactNode }) {
+function tabFromHash(): Tab {
+  if (typeof window === "undefined") return "questions";
+  if (window.location.hash === "#baza") return "baza";
+  if (window.location.hash === "#obzor") return "overview";
+  return "questions";
+}
+
+export function CaspianShell({
+  overview,
+  baza,
+}: {
+  overview: ReactNode;
+  baza: ReactNode;
+}) {
   const [tab, setTab] = useState<Tab>("questions");
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (
-      window.location.hash === "#obzor" ||
-      window.location.hash === "#baza"
-    ) {
-      setTab("overview");
-    }
+    setTab(tabFromHash());
   }, []);
 
   function hideAnswers() {
@@ -48,6 +56,17 @@ export function CaspianShell({ overview }: { overview: ReactNode }) {
           aria-selected={tab === "overview"}
           onClick={() => {
             setTab("overview");
+            history.replaceState(null, "", "/caspian#obzor");
+          }}
+        >
+          Обзор
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={tab === "baza"}
+          onClick={() => {
+            setTab("baza");
             history.replaceState(null, "", "/caspian#baza");
           }}
         >
@@ -62,6 +81,7 @@ export function CaspianShell({ overview }: { overview: ReactNode }) {
           </div>
         </div>
         <div hidden={tab !== "overview"}>{overview}</div>
+        <div hidden={tab !== "baza"}>{baza}</div>
       </div>
 
       {tab === "questions" ? (

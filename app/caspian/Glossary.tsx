@@ -3,14 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import type { CaspianFact } from "@/lib/caspian/types";
 
-export function Overview() {
+export function Glossary() {
   const [facts, setFacts] = useState<CaspianFact[] | null>(null);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/caspian/facts?t=" + Date.now(), { cache: "no-store" })
+    fetch("/api/caspian/facts", { cache: "no-store" })
       .then((response) => {
         if (!response.ok) throw new Error("Не удалось загрузить базу");
         return response.json() as Promise<CaspianFact[]>;
@@ -44,6 +44,10 @@ export function Overview() {
 
   return (
     <div className="glossary">
+      <p className="overview-note">
+        Короткий словарь к вопросам: имя и суть. Одна строка не заменяет статью, но
+        избавляет от необходимости гуглить каждую мелочь посреди подготовки.
+      </p>
       <input
         className="glossary-search"
         type="search"
