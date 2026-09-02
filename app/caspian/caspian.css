@@ -373,6 +373,11 @@
     radial-gradient(ellipse at 50% 42%, #1a2d4d 0%, #0f1a2e 52%, #070d19 100%);
   user-select: none;
   touch-action: none;
+  cursor: grab;
+}
+
+.tag-sphere:active {
+  cursor: grabbing;
 }
 
 .tag-sphere-item {
@@ -380,8 +385,14 @@
   white-space: nowrap;
   font-weight: 650;
   line-height: 1.15;
-  pointer-events: none;
+  text-decoration: none;
+  cursor: pointer;
   text-shadow: 0 1px 10px rgb(7 13 25 / 0.85);
+}
+
+.tag-sphere-item:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .type-list {

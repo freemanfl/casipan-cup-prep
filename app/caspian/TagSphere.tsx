@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { OverviewTag } from "@/lib/caspian/types";
 
 type Placed = {
@@ -26,43 +26,28 @@ function fibonacciSphere(tags: OverviewTag[]): Placed[] {
   });
 }
 
+function googleSearch(query: string): string {
+  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+}
+
 export function TagSphere({ tags }: { tags: OverviewTag[] }) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  const rotation = useRef({ x: -0.2, y: 0 });
-  const tilt = useRef({ x: -0.2, y: 0 });
-  const [frame, setFrame] = useState(0);
+  const drag = useRef<{
+    pointerId: number;
+    x: number;
+    y: number;
+    rotX: number;
+    rotY: number;
+  } | null>(null);
+  const dragged = useRef(false);
+  const [rotation, setRotation] = useState({ x: -0.2, y: 0 });
   const points = useMemo(() => fibonacciSphere(tags.slice(0, 40)), [tags]);
   const hottest = tags[0]?.times ?? 1;
 
-  useEffect(() => {
-    let raf = 0;
-    let previous = performance.now();
-    const tick = (now: number) => {
-      const delta = Math.min(40, now - previous);
-      previous = now;
-      rotation.current.y += 0.00032 * delta;
-      rotation.current.x += (tilt.current.x - rotation.current.x) * 0.05;
-      setFrame((value) => value + 1);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  function onMove(event: React.MouseEvent<HTMLDivElement>) {
-    const box = wrapRef.current?.getBoundingClientRect();
-    if (!box) return;
-    const nx = ((event.clientX - box.left) / box.width) * 2 - 1;
-    const ny = ((event.clientY - box.top) / box.height) * 2 - 1;
-    tilt.current.x = -0.2 + ny * 0.45;
-    tilt.current.y = nx * 0.7;
-  }
-
-  const cosX = Math.cos(rotation.current.x);
-  const sinX = Math.sin(rotation.current.x);
-  const cosY = Math.cos(rotation.current.y + tilt.current.y * 0.4);
-  const sinY = Math.sin(rotation.current.y + tilt.current.y * 0.4);
-  void frame;
+  const cosX = Math.cos(rotation.x);
+  const sinX = Math.sin(rotation.x);
+  const cosY = Math.cos(rotation.y);
+  const sinY = Math.sin(rotation.y);
 
   const projected = points
     .map((point) => {
@@ -81,21 +66,61 @@ export function TagSphere({ tags }: { tags: OverviewTag[] }) {
     })
     .sort((a, b) => a.depth - b.depth);
 
+  function onPointerDown(event: React.PointerEvent<HTMLDivElement>) {
+    if (event.button !== 0) return;
+    wrapRef.current?.setPointerCapture(event.pointerId);
+    dragged.current = false;
+    drag.current = {
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      rotX: rotation.x,
+      rotY: rotation.y,
+    };
+  }
+
+  function onPointerMove(event: React.PointerEvent<HTMLDivElement>) {
+    const start = drag.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) dragged.current = true;
+    if (!dragged.current) return;
+    setRotation({
+      x: Math.max(-1.15, Math.min(1.15, start.rotX + dy * 0.008)),
+      y: start.rotY + dx * 0.008,
+    });
+  }
+
+  function onPointerUp(event: React.PointerEvent<HTMLDivElement>) {
+    if (drag.current?.pointerId === event.pointerId) {
+      wrapRef.current?.releasePointerCapture(event.pointerId);
+    }
+    drag.current = null;
+  }
+
   return (
     <div
       ref={wrapRef}
       className="tag-sphere"
-      onMouseMove={onMove}
-      onMouseLeave={() => {
-        tilt.current = { x: -0.2, y: 0 };
-      }}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
     >
       {projected.map((item) => {
         const heat = item.tag.times / hottest;
         return (
-          <span
+          <a
             key={item.tag.name}
             className="tag-sphere-item"
+            href={googleSearch(item.tag.name)}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`Искать «${item.tag.name}» в Google`}
+            onClick={(event) => {
+              if (dragged.current) event.preventDefault();
+            }}
             style={{
               left: `${item.left}%`,
               top: `${item.top}%`,
@@ -107,7 +132,7 @@ export function TagSphere({ tags }: { tags: OverviewTag[] }) {
             }}
           >
             {item.tag.name}
-          </span>
+          </a>
         );
       })}
     </div>
