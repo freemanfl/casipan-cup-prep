@@ -6,6 +6,7 @@ import type {
   OverviewPeriod,
   OverviewTheme,
 } from "@/lib/caspian/types";
+import { QuestionTypes } from "./QuestionTypes";
 
 const PIE_COLORS: Record<string, string> = {
   литература: "#38bdf8",
@@ -217,27 +218,7 @@ export function OverviewDashboard() {
         </div>
       </section>
 
-      <section>
-        <h2>Как устроены вопросы</h2>
-        <p className="overview-note">
-          Содержание — в базе и на линии времени. Здесь только механика: что с вами
-          делают в формулировке и куда смотреть, чтобы не крутить пустой ассоциативный
-          ряд. Имена авторов пакетов нарочно не называем. Пишут по-разному, приёмы
-          общие.
-        </p>
-        <div className="type-list">
-          {data.types.map((item) => (
-            <article key={item.id} className="type-card">
-              <h3>{item.title}</h3>
-              <p>{item.what}</p>
-              <p>
-                <strong>Пример.</strong> {item.example}
-              </p>
-              <p className="overview-note">{item.how}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <QuestionTypes />
 
       {open ? (
         <div

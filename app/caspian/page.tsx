@@ -4,6 +4,6 @@ import { OverviewDashboard } from "./OverviewDashboard";
 
 export default function CaspianPage() {
   return (
-    <CaspianShell overview={<OverviewDashboard />} baza={<Glossary />} />
+    <CaspianShell overview={<OverviewDashboard />} glossary={<Glossary />} />
   );
 }
