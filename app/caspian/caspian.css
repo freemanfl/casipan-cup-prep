@@ -324,7 +324,7 @@
 }
 
 .tl-caption {
-  min-height: 4.8em;
+  min-height: 11.5em;
   margin: 0 0 18px;
   padding: 12px 14px;
   border: 1px solid var(--border);
@@ -332,6 +332,7 @@
   background: var(--surface);
   color: var(--foreground);
   font-size: 0.95rem;
+  line-height: 1.55;
 }
 
 .tl-caption strong {
@@ -361,21 +362,26 @@
   flex-shrink: 0;
 }
 
-.tag-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
+.tag-sphere {
+  position: relative;
+  height: 380px;
   margin: 12px 0 8px;
-  padding: 14px 16px;
-  background: var(--surface);
+  overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
+  background:
+    radial-gradient(ellipse at 50% 42%, #1a2d4d 0%, #0f1a2e 52%, #070d19 100%);
+  user-select: none;
+  touch-action: none;
 }
 
-.tag-cloud-item {
-  line-height: 1.2;
+.tag-sphere-item {
+  position: absolute;
+  white-space: nowrap;
   font-weight: 650;
+  line-height: 1.15;
+  pointer-events: none;
+  text-shadow: 0 1px 10px rgb(7 13 25 / 0.85);
 }
 
 .type-list {
@@ -615,6 +621,14 @@
     width: 76px;
     font-size: 0.72rem;
     padding: 8px 6px;
+  }
+
+  .tl-caption {
+    min-height: 16em;
+  }
+
+  .tag-sphere {
+    height: 300px;
   }
 
   .overview .style-ex {

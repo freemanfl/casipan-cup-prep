@@ -7,6 +7,7 @@ import type {
   OverviewTheme,
 } from "@/lib/caspian/types";
 import { QuestionTypes } from "./QuestionTypes";
+import { TagSphere } from "./TagSphere";
 
 const PIE_COLORS: Record<string, string> = {
   литература: "#38bdf8",
@@ -50,7 +51,6 @@ export function OverviewDashboard() {
   const [error, setError] = useState("");
   const [open, setOpen] = useState<OverviewPeriod | null>(null);
   const [hover, setHover] = useState<OverviewPeriod | null>(null);
-  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -81,48 +81,16 @@ export function OverviewDashboard() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const maxTag = data?.tags[0]?.times ?? 1;
   const pie = useMemo(
     () => (data ? pieGradient(data.themes) : ""),
     [data],
   );
-
-  const visibleFacts = useMemo(() => {
-    if (!open) return [];
-    const needle = filter.trim().toLocaleLowerCase("ru");
-    if (!needle) return open.facts;
-    return open.facts.filter(
-      (fact) =>
-        fact.name.toLocaleLowerCase("ru").includes(needle) ||
-        fact.gloss.toLocaleLowerCase("ru").includes(needle),
-    );
-  }, [open, filter]);
 
   if (error) return <p>{error}</p>;
   if (!data) return <p>Собираю учебник…</p>;
 
   return (
     <div className="overview-page">
-      <section className="overview-lead">
-        <h2>Зачем эта вкладка</h2>
-        <p>
-          Это не конспект всех наук и не полный курс истории. Это каркас: достаточно
-          широкий, чтобы с нуля или с двойки дотянуть себя до пятёрки–шестёрки, и
-          достаточно короткий, чтобы его можно было пробежать, а не сдавать как
-          экзамен. Школьный учебник роет глубоко в немногих местах. Здесь наоборот —
-          широкое поле и чуть меньше тщательности. В этом прелесть: вы начинаете
-          чувствовать эпоху, даже если не можете назвать все даты.
-        </p>
-        <p>
-          Литература, история, искусство держат большую часть вопросов. Факты из
-          третьей вкладки разложены по пятидесятилетиям — не по тому времени, о
-          котором книга рассказывает, а по тому, когда она появилась. Роман 1900
-          года о семнадцатом веке лежит в 1900-м: тогда его могли прочитать живые
-          люди. Годы не всегда точны до единицы; важнее понять, чего ещё не было.
-          В 1992 году никто не доставал из кармана айфон.
-        </p>
-      </section>
-
       <section>
         <h2>Линия времени</h2>
         <p className="overview-note">
@@ -142,10 +110,7 @@ export function OverviewDashboard() {
                 onMouseEnter={() => setHover(period)}
                 onMouseLeave={() => setHover((current) => (current === period ? null : current))}
                 onFocus={() => setHover(period)}
-                onClick={() => {
-                  setOpen(period);
-                  setFilter("");
-                }}
+                onClick={() => setOpen(period)}
               >
                 <span className="tl-year">{period.label}</span>
                 <span className="tl-dot" />
@@ -197,25 +162,7 @@ export function OverviewDashboard() {
           авторов. Редкую нишевую книгу сюда не пускали: если имя крупное, его стоит
           узнать заранее, а не надеяться, что «как-нибудь подумается».
         </p>
-        <div className="tag-cloud">
-          {data.tags.map((tag) => {
-            const weight = 0.82 + (tag.times / maxTag) * 1.15;
-            const hot = tag.times / maxTag;
-            return (
-              <span
-                key={tag.name}
-                className="tag-cloud-item"
-                style={{
-                  fontSize: `${weight}rem`,
-                  color: `color-mix(in srgb, var(--accent) ${Math.round(40 + hot * 60)}%, var(--muted))`,
-                }}
-                title={`${tag.times} раз`}
-              >
-                {tag.name}
-              </span>
-            );
-          })}
-        </div>
+        <TagSphere tags={data.tags} />
       </section>
 
       <QuestionTypes />
@@ -249,18 +196,8 @@ export function OverviewDashboard() {
                   {open.facts.length} фактов, примерно этого времени. Это не всё, что
                   тогда существовало, — только то, на чём стоят вопросы этой базы.
                 </p>
-                {open.facts.length > 12 ? (
-                  <input
-                    className="glossary-search"
-                    type="search"
-                    value={filter}
-                    onChange={(event) => setFilter(event.target.value)}
-                    placeholder="Найти внутри эпохи…"
-                    aria-label="Поиск по фактам эпохи"
-                  />
-                ) : null}
                 <div className="era-facts">
-                  {visibleFacts.map((fact) => (
+                  {open.facts.map((fact) => (
                     <p key={fact.name} className="glossary-item">
                       <strong>{fact.name}</strong> — {fact.gloss}
                     </p>
